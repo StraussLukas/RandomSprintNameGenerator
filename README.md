@@ -31,7 +31,6 @@ https://random-word-form.herokuapp.com
 * To start the programm, you have to execute the executable JAR-file `RandomSprintNameGenerator.jar` via doubleclick
 or type `java -jar RandomSprintNameGenerator.jar` in console when a JVM is on your machine. To execute the EXE-file
 on a Windows machine, a JRE (1.8.0 or higher) has to be installed. When it is installed, you can doubleclick the `RandomSprintNameGenerator.exe`.
-
 If you want to import the project to an IDE like Eclipse or IntelliJ, you have to run the `RunnerSprintNameGenerator.java`, to start the programm.
 
 * When the programm has been started, you can entry an initial Letter, the random names should start with and how many
