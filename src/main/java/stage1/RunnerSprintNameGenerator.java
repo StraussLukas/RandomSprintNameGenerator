@@ -240,14 +240,14 @@ public class RunnerSprintNameGenerator extends JFrame implements ActionListener{
 				JOptionPane.PLAIN_MESSAGE);
 	}
 
-	private static void startRevote(List<SprintName> namesWithMostVotes) {
+	public static void startRevote(List<SprintName> namesWithMostVotes) {
 		clearAll();
 		displaySprintNames(namesWithMostVotes);
 		startVoting(namesWithMostVotes);
 		sprintNames = namesWithMostVotes;
 	}
 
-	private static void markNamesDraw(List<SprintName> namesWithMostVotes) {
+	public static void markNamesDraw(List<SprintName> namesWithMostVotes) {
 		for (SprintName name : namesWithMostVotes) {
 			name.markName(Color.YELLOW);
 		}

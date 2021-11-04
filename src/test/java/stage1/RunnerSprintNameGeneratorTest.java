@@ -96,7 +96,7 @@ public class RunnerSprintNameGeneratorTest {
 		assertTrue( RunnerSprintNameGenerator.getSprintNames().isEmpty() );
 		assertEquals(0, SprintName.getVoteCount());
 	}
-	
+
 	@Test
 	public void test_markNameWithMostVotes_checkIfCorrectNameIsHighlightedGreenIfThereIsAWinner() {
 		setTestSprintNames();
@@ -111,7 +111,7 @@ public class RunnerSprintNameGeneratorTest {
 		RunnerSprintNameGenerator.markNameWithMostVotes();
 		assertEquals(Color.GREEN, RunnerSprintNameGenerator.getSprintNames().get(1).getOutputName().getBackground());
 	}
-	
+
 	@Test
 	public void test_markNameWithMostVotes_checkIfRevotingStartsIfThereIsADraw() {
 		setTestSprintNames();
@@ -125,10 +125,14 @@ public class RunnerSprintNameGeneratorTest {
 		RunnerSprintNameGenerator.getSprintNames().get(2).voteUp();
 		RunnerSprintNameGenerator.getSprintNames().get(2).voteUp();
 		RunnerSprintNameGenerator.markNameWithMostVotes();
-		assertEquals(1, RunnerSprintNameGenerator.getNamesWithMostVotes().get(0).getIndex());
-		assertEquals(2, RunnerSprintNameGenerator.getNamesWithMostVotes().get(1).getIndex());
+		assertTrue(SprintName.getVoteCount() > 0);
+		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
+			assertNotNull(sprintName.getOutputName());
+			assertNotNull(sprintName.getVoteBtn());
+		}
+
 	}
-	
+
 	@Test
 	public void test_getNamesWithMostVotes_checkIfListContainsTheRightNameIfThereIsAWinner() {
 		setTestSprintNames();
@@ -144,7 +148,7 @@ public class RunnerSprintNameGeneratorTest {
 		RunnerSprintNameGenerator.getSprintNames().get(2).voteUp();
 		assertEquals(RunnerSprintNameGenerator.getSprintNames().get(1), RunnerSprintNameGenerator.getNamesWithMostVotes().get(0));
 	}
-	
+
 	@Test
 	public void test_getNamesWithMostVotes_checkIfListContainsTheRightNamesIfThereIsADraw() {
 		setTestSprintNames();
@@ -159,6 +163,77 @@ public class RunnerSprintNameGeneratorTest {
 		RunnerSprintNameGenerator.getSprintNames().get(2).voteUp();
 		assertEquals(RunnerSprintNameGenerator.getSprintNames().get(1), RunnerSprintNameGenerator.getNamesWithMostVotes().get(0));
 		assertEquals(RunnerSprintNameGenerator.getSprintNames().get(2), RunnerSprintNameGenerator.getNamesWithMostVotes().get(1));
+	}
+
+	@Test
+	public void test_getHighestVotes_checkIfHighestVotesIsCorrect() {
+		setTestSprintNames();
+		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
+			sprintName.displaySprintName();
+			sprintName.displayVoteButton();
+		}
+		SprintName.setVoteCount(5);
+		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(2).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(2).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(2).voteUp();
+		assertEquals(3, RunnerSprintNameGenerator.getHighestVotes());
+	}
+
+
+	@Test
+	public void test_getHighestVotes_checkIfHighestVotesIsCorrectEvenIfMoreNamesHasTheSameVotes() {
+		setTestSprintNames();
+		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
+			sprintName.displaySprintName();
+			sprintName.displayVoteButton();
+		}
+		SprintName.setVoteCount(6);
+		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(2).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(2).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(2).voteUp();
+		assertEquals(3, RunnerSprintNameGenerator.getHighestVotes());
+	}
+
+	@Test
+	public void test_startRevote_checkIfRevoteStartsWithRemainingNames() {
+		setTestSprintNames();
+		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
+			sprintName.displaySprintName();
+			sprintName.displayVoteButton();
+		}
+		SprintName.setVoteCount(6);
+		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(2).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(2).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(2).voteUp();
+		RunnerSprintNameGenerator.startRevote(RunnerSprintNameGenerator.getNamesWithMostVotes());
+		assertEquals(1, RunnerSprintNameGenerator.getSprintNames().get(0).getIndex());
+		assertEquals(2, RunnerSprintNameGenerator.getSprintNames().get(1).getIndex());
+	}
+	
+	@Test
+	public void test_markNamesDraw_checkIfNamesWereHighlightedYellow() {
+		setTestSprintNames();
+		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
+			sprintName.displaySprintName();
+			sprintName.displayVoteButton();
+		}
+		SprintName.setVoteCount(4);
+		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(2).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(2).voteUp();
+		RunnerSprintNameGenerator.markNamesDraw(RunnerSprintNameGenerator.getNamesWithMostVotes());
+		assertEquals(Color.YELLOW, RunnerSprintNameGenerator.getNamesWithMostVotes().get(0).getOutputName().getBackground());
+		assertEquals(Color.YELLOW, RunnerSprintNameGenerator.getNamesWithMostVotes().get(1).getOutputName().getBackground());
+	
 	}
 }
 
