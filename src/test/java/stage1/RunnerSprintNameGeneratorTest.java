@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -234,6 +235,57 @@ public class RunnerSprintNameGeneratorTest {
 		assertEquals(Color.YELLOW, RunnerSprintNameGenerator.getNamesWithMostVotes().get(0).getOutputName().getBackground());
 		assertEquals(Color.YELLOW, RunnerSprintNameGenerator.getNamesWithMostVotes().get(1).getOutputName().getBackground());
 	
+	}
+	@Test
+	public void test_markWinnerName_checkIfCorrectNameIsHighlightedGreen() {
+		setTestSprintNames();
+		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
+			sprintName.displaySprintName();
+			sprintName.displayVoteButton();
+		}
+		SprintName.setVoteCount(5);
+		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(2).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(2).voteUp();
+		RunnerSprintNameGenerator.markWinnerName(RunnerSprintNameGenerator.getNamesWithMostVotes());
+		assertEquals(Color.GREEN, RunnerSprintNameGenerator.getNamesWithMostVotes().get(0).getOutputName().getBackground());
+	}
+	
+	@Test 
+	public void test_getNamesWithMostVotesString_checkIfStringContainsNames() {
+		setTestSprintNames();
+		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
+			sprintName.displaySprintName();
+			sprintName.displayVoteButton();
+		}
+		SprintName.setVoteCount(4);
+		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(2).voteUp();
+		RunnerSprintNameGenerator.getSprintNames().get(2).voteUp();
+		assertTrue(RunnerSprintNameGenerator.getNamesWithMostVotesString(RunnerSprintNameGenerator.getNamesWithMostVotes()).toString().contains(RunnerSprintNameGenerator.getNamesWithMostVotes().get(0).getName()));
+		assertTrue(RunnerSprintNameGenerator.getNamesWithMostVotesString(RunnerSprintNameGenerator.getNamesWithMostVotes()).toString().contains(RunnerSprintNameGenerator.getNamesWithMostVotes().get(1).getName()));
+	}
+	
+	@Test
+	public void test_setNumberofVoters_checkIfVoteCountIsSet() {
+		RunnerSprintNameGenerator.setNumberofVoters();
+		assertTrue(SprintName.getVoteCount() > 0);
+	}
+	
+	@Test
+	public void test_startVoting_checkIfVotingStarted() {
+		setTestSprintNames();
+		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
+			sprintName.displaySprintName();
+		}
+		RunnerSprintNameGenerator.startVoting(RunnerSprintNameGenerator.getSprintNames());
+		for(int i = 0; i < RunnerSprintNameGenerator.getSprintNames().size(); i++) {
+			assertNotNull(RunnerSprintNameGenerator.getSprintNames().get(i).getVoteBtn());
+		}
+		assertTrue(SprintName.getVoteCount() > 0);
 	}
 }
 

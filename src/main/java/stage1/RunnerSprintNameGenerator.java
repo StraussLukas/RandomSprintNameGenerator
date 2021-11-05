@@ -220,10 +220,11 @@ public class RunnerSprintNameGenerator extends JFrame implements ActionListener{
 		}
 	}
 
-	private static void markWinnerName(List<SprintName> namesWithMostVotes) {
+	public static void markWinnerName(List<SprintName> namesWithMostVotes) {
 		for (SprintName name : namesWithMostVotes) {
 			name.markName(Color.GREEN);
 		}
+		panel.updateUI();
 	}
 
 	private static void showDialogWinnerName(List<SprintName> namesWithMostVotes) {
@@ -251,6 +252,8 @@ public class RunnerSprintNameGenerator extends JFrame implements ActionListener{
 		for (SprintName name : namesWithMostVotes) {
 			name.markName(Color.YELLOW);
 		}
+		panel.updateUI();
+
 	}
 
 	public static StringBuilder getNamesWithMostVotesString(List<SprintName> namesWithMostVotes) {
