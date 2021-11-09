@@ -17,8 +17,27 @@ public class SprintName implements ActionListener{
 	private static int yCord = 180;
 	private static JPanel panel;
 	private JTextField outputName;
-	private JButton voteBtn;
 	private JLabel voteLable = new JLabel();
+	private JButton voteBtn;
+
+	
+	public JTextField getOutputName() {
+		return outputName;
+	}
+
+	public void setOutputName(JTextField outputName) {
+		this.outputName = outputName;
+	}
+
+	public JButton getVoteBtn() {
+		return voteBtn;
+	}
+
+	public void setVoteBtn(JButton voteBtn) {
+		this.voteBtn = voteBtn;
+	}
+
+
 
 
 	public static int getVoteCount() {

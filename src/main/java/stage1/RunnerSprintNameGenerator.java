@@ -24,10 +24,61 @@ public class RunnerSprintNameGenerator extends JFrame implements ActionListener{
 	private static JButton b1, btnStartVoting, btnRevote;
 	private static JLabel l1, l2, statusLabel, headlineLabel;
 	private static JTextField t1, t2;
-	private static List<SprintName> sprintNames;
 	private RandomSprintNameGenerator generator = new RandomSprintNameGenerator();
+	private static List<SprintName> sprintNames;
+
+	public static JLabel getStatusLabel() {
+		return statusLabel;
+	}
+
+	public static void setStatusLabel(JLabel statusLabel) {
+		RunnerSprintNameGenerator.statusLabel = statusLabel;
+	}
+	
+	public static JTextField getT1() {
+		return t1;
+	}
+
+	public static void setT1(JTextField t1) {
+		RunnerSprintNameGenerator.t1 = t1;
+	}
+
+	public static JTextField getT2() {
+		return t2;
+	}
+
+	public static void setT2(JTextField t2) {
+		RunnerSprintNameGenerator.t2 = t2;
+	}
+
+	public static List<SprintName> getSprintNames() {
+		return sprintNames;
+	}
+
+	public static void setSprintNames(List<SprintName> sprintNames) {
+		RunnerSprintNameGenerator.sprintNames = sprintNames;
+	}
+
 	private static int voteCount = 0;
 
+	public static JButton getBtnStartVoting() {
+		return btnStartVoting;
+	}
+
+	public static void setBtnStartVoting(JButton btnStartVoting) {
+		RunnerSprintNameGenerator.btnStartVoting = btnStartVoting;
+	}
+
+	public static JButton getBtnRevote() {
+		return btnRevote;
+	}
+
+	public static void setBtnRevote(JButton btnRevote) {
+		RunnerSprintNameGenerator.btnRevote = btnRevote;
+	}
+
+
+	
 	public RunnerSprintNameGenerator() {
 		panel.setLayout(null);
 		SprintName.setPanel(panel);
@@ -56,7 +107,7 @@ public class RunnerSprintNameGenerator extends JFrame implements ActionListener{
 		this.add(panel);
 	}
 
-	private static void createVoteButtons() {
+	public static void createVoteButtons() {
 		if(btnStartVoting == null) 
 			createStartVotingButton();
 		if(btnRevote == null) 
@@ -75,7 +126,7 @@ public class RunnerSprintNameGenerator extends JFrame implements ActionListener{
 		panel.add(btnStartVoting);
 	}
 
-	private static void displaySprintNames(List<SprintName> names) {
+	public static void displaySprintNames(List<SprintName> names) {
 		for (int i = 0; i < names.size(); i++)
 			names.get(i).displaySprintName();
 		if( btnStartVoting == null || btnRevote == null )
@@ -83,18 +134,46 @@ public class RunnerSprintNameGenerator extends JFrame implements ActionListener{
 		panel.updateUI();
 	}
 
-	private boolean checkIfInputCorrect() {
-		if( t1.getText().trim().length() != 1 || 
+	public static boolean checkIfInputCorrect() {
+		if( t1.getText().isEmpty() || 
+				t2.getText().isEmpty() ||
+				t1.getText().trim().length() != 1 || 
 				Integer.valueOf(t2.getText().trim()) < 1 || 
-				Integer.valueOf(t2.getText().trim()) > 10 || 
-				t1.getText().isEmpty() || 
-				t2.getText().isEmpty()  )
+				Integer.valueOf(t2.getText().trim()) > 10  ) {
 			return false;
-		else
+		}
+		else if (t1.getText().trim().toUpperCase().contains("A") || 
+				t1.getText().trim().toUpperCase().contains("B") ||
+				t1.getText().trim().toUpperCase().contains("C") ||
+				t1.getText().trim().toUpperCase().contains("D") ||
+				t1.getText().trim().toUpperCase().contains("E") ||
+				t1.getText().trim().toUpperCase().contains("F") ||
+				t1.getText().trim().toUpperCase().contains("G") ||
+				t1.getText().trim().toUpperCase().contains("H") ||
+				t1.getText().trim().toUpperCase().contains("I") ||
+				t1.getText().trim().toUpperCase().contains("J") ||
+				t1.getText().trim().toUpperCase().contains("K") ||
+				t1.getText().trim().toUpperCase().contains("L") ||
+				t1.getText().trim().toUpperCase().contains("M") ||
+				t1.getText().trim().toUpperCase().contains("N") ||
+				t1.getText().trim().toUpperCase().contains("O") ||
+				t1.getText().trim().toUpperCase().contains("P") ||
+				t1.getText().trim().toUpperCase().contains("Q") ||
+				t1.getText().trim().toUpperCase().contains("R") ||
+				t1.getText().trim().toUpperCase().contains("S") ||
+				t1.getText().trim().toUpperCase().contains("T") ||
+				t1.getText().trim().toUpperCase().contains("U") ||
+				t1.getText().trim().toUpperCase().contains("V") ||
+				t1.getText().trim().toUpperCase().contains("W") ||
+				t1.getText().trim().toUpperCase().contains("X") ||
+				t1.getText().trim().toUpperCase().contains("Y") ||
+				t1.getText().trim().toUpperCase().contains("Z") ) {
 			return true;
+			
+		} else return false;
 	}
 
-	private static void clearAll() {
+	public static void clearAll() {
 		statusLabel.setText("");
 		if(!(sprintNames == null)) {	
 			for (SprintName sprintName : sprintNames) {
@@ -105,6 +184,7 @@ public class RunnerSprintNameGenerator extends JFrame implements ActionListener{
 			}
 			for(int i = 0; i < sprintNames.size(); i++  )
 				sprintNames.remove(i);
+			sprintNames.clear();
 			SprintName.setyCord(180);
 		}
 		panel.updateUI();
@@ -119,7 +199,9 @@ public class RunnerSprintNameGenerator extends JFrame implements ActionListener{
 	}
 
 	public static void markNameWithMostVotes() {
-		List<SprintName> namesWithMostVotes = getNamesWithMostVotes();	
+		List<SprintName> namesWithMostVotes = getNamesWithMostVotes();
+		for (SprintName name : sprintNames)
+			name.clearHighlighting();
 		if( namesWithMostVotes.size() > 1 ) {
 			markNamesDraw(namesWithMostVotes);
 			if(SprintName.getVoteCount() == 0) {
@@ -140,10 +222,11 @@ public class RunnerSprintNameGenerator extends JFrame implements ActionListener{
 		}
 	}
 
-	private static void markWinnerName(List<SprintName> namesWithMostVotes) {
+	public static void markWinnerName(List<SprintName> namesWithMostVotes) {
 		for (SprintName name : namesWithMostVotes) {
 			name.markName(Color.GREEN);
 		}
+		panel.updateUI();
 	}
 
 	private static void showDialogWinnerName(List<SprintName> namesWithMostVotes) {
@@ -160,20 +243,22 @@ public class RunnerSprintNameGenerator extends JFrame implements ActionListener{
 				JOptionPane.PLAIN_MESSAGE);
 	}
 
-	private static void startRevote(List<SprintName> namesWithMostVotes) {
+	public static void startRevote(List<SprintName> namesWithMostVotes) {
 		clearAll();
 		displaySprintNames(namesWithMostVotes);
 		startVoting(namesWithMostVotes);
 		sprintNames = namesWithMostVotes;
 	}
 
-	private static void markNamesDraw(List<SprintName> namesWithMostVotes) {
+	public static void markNamesDraw(List<SprintName> namesWithMostVotes) {
 		for (SprintName name : namesWithMostVotes) {
 			name.markName(Color.YELLOW);
 		}
+		panel.updateUI();
+
 	}
 
-	private static StringBuilder getNamesWithMostVotesString(List<SprintName> namesWithMostVotes) {
+	public static StringBuilder getNamesWithMostVotesString(List<SprintName> namesWithMostVotes) {
 		StringBuilder names = new StringBuilder();
 		names.append("\"" + namesWithMostVotes.get(0).getName() + "\"");
 		for(int i = 1; i < namesWithMostVotes.size(); i++) {
@@ -182,17 +267,16 @@ public class RunnerSprintNameGenerator extends JFrame implements ActionListener{
 		return names;
 	}
 
-	private static List<SprintName> getNamesWithMostVotes() {
+	public static List<SprintName> getNamesWithMostVotes() {
 		List<SprintName> namesWithMostVotes = new ArrayList<SprintName>();
 		for (SprintName name : sprintNames) {
-			name.clearHighlighting();
 			if( name.getVotes() == getHighestVotes() )
 				namesWithMostVotes.add(name);
 		}
 		return namesWithMostVotes;
 	}
 
-	private static int getHighestVotes() {
+	public static int getHighestVotes() {
 		int[] votes = new int[sprintNames.size()];
 		for (int i = 0; i < votes.length; i++)
 			votes[i] = sprintNames.get(i).getVotes();
@@ -204,7 +288,7 @@ public class RunnerSprintNameGenerator extends JFrame implements ActionListener{
 		return max;
 	}
 
-	private static void setNumberofVoters() {
+	public static void setNumberofVoters() {
 		Icon icon = new ImageIcon();
 		Object[] possibilities = {1,2,3,4,5,6,7,8,9,10};
 		voteCount = (Integer)JOptionPane.showInputDialog( 

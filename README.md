@@ -28,6 +28,9 @@ https://random-word-form.herokuapp.com
 
 ## Introduction ##
 
+* The executeablue JAR-File can be created with typing `mvn clean compile assembly:single` in console if maven is installed on your machine. 
+The EXE-file has been created using the tool `launch4j`
+
 * To start the programm, you have to execute the executable JAR-file `RandomSprintNameGenerator.jar` via doubleclick
 or type `java -jar RandomSprintNameGenerator.jar` in console when a JVM is on your machine. To execute the EXE-file
 on a Windows machine, a JRE (1.8.0 or higher) has to be installed. When it is installed, you can doubleclick the `RandomSprintNameGenerator.exe`.
