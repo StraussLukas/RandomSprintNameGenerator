@@ -166,8 +166,8 @@ public class RunnerSprintNameGenerator extends JFrame implements ActionListener{
 				t1.getText().trim().toUpperCase().contains("V") ||
 				t1.getText().trim().toUpperCase().contains("W") ||
 				t1.getText().trim().toUpperCase().contains("X") ||
-				t1.getText().trim().toUpperCase().contains("y") ||
-				t1.getText().trim().toUpperCase().contains("z") ) {
+				t1.getText().trim().toUpperCase().contains("Y") ||
+				t1.getText().trim().toUpperCase().contains("Z") ) {
 			return true;
 			
 		} else return false;
@@ -199,7 +199,9 @@ public class RunnerSprintNameGenerator extends JFrame implements ActionListener{
 	}
 
 	public static void markNameWithMostVotes() {
-		List<SprintName> namesWithMostVotes = getNamesWithMostVotes();	
+		List<SprintName> namesWithMostVotes = getNamesWithMostVotes();
+		for (SprintName name : sprintNames)
+			name.clearHighlighting();
 		if( namesWithMostVotes.size() > 1 ) {
 			markNamesDraw(namesWithMostVotes);
 			if(SprintName.getVoteCount() == 0) {
@@ -268,7 +270,6 @@ public class RunnerSprintNameGenerator extends JFrame implements ActionListener{
 	public static List<SprintName> getNamesWithMostVotes() {
 		List<SprintName> namesWithMostVotes = new ArrayList<SprintName>();
 		for (SprintName name : sprintNames) {
-			name.clearHighlighting();
 			if( name.getVotes() == getHighestVotes() )
 				namesWithMostVotes.add(name);
 		}

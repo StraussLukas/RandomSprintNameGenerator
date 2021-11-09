@@ -11,11 +11,31 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 
 public class RunnerSprintNameGeneratorTest {
 
+	@Before
+	public void setUp() {
+		setTestSprintNames();
+		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
+			sprintName.displaySprintName();
+			sprintName.displayVoteButton();
+		}
+		JLabel label = new JLabel("Test");
+		RunnerSprintNameGenerator.setStatusLabel(label);
+	}
+	
+	@After
+	public void tearDown() {
+		RunnerSprintNameGenerator.clearAll();
+		RunnerSprintNameGenerator.setSprintNames(null);
+		RunnerSprintNameGenerator.setStatusLabel(null);
+	}
+	
 	public void setTestSprintNames(){
 		List<SprintName> sprintNames = new ArrayList<SprintName>();
 		SprintName name1 = new SprintName("accident", 0);
@@ -43,7 +63,6 @@ public class RunnerSprintNameGeneratorTest {
 
 	@Test
 	public void test_displaySprintNames_checkIfNamesWereDisplayedInCorrectOrder() {
-		setTestSprintNames();
 		RunnerSprintNameGenerator.displaySprintNames(RunnerSprintNameGenerator.getSprintNames());
 		assertEquals(RunnerSprintNameGenerator.getSprintNames().get(0).getOutputName().getText(), "accident");
 		assertEquals(RunnerSprintNameGenerator.getSprintNames().get(1).getOutputName().getText(), "alien");
@@ -85,13 +104,6 @@ public class RunnerSprintNameGeneratorTest {
 
 	@Test
 	public void test_clearAll_checkIfEverythingIsCleared() {
-		setTestSprintNames();
-		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
-			sprintName.displaySprintName();
-			sprintName.displayVoteButton();
-		}
-		JLabel lable = new JLabel("Test");
-		RunnerSprintNameGenerator.setStatusLabel(lable);
 		RunnerSprintNameGenerator.clearAll();
 		assertEquals("", RunnerSprintNameGenerator.getStatusLabel().getText().trim());
 		assertTrue( RunnerSprintNameGenerator.getSprintNames().isEmpty() );
@@ -100,11 +112,6 @@ public class RunnerSprintNameGeneratorTest {
 
 	@Test
 	public void test_markNameWithMostVotes_checkIfCorrectNameIsHighlightedGreenIfThereIsAWinner() {
-		setTestSprintNames();
-		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
-			sprintName.displaySprintName();
-			sprintName.displayVoteButton();
-		}
 		SprintName.setVoteCount(3);
 		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
 		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
@@ -115,11 +122,6 @@ public class RunnerSprintNameGeneratorTest {
 
 	@Test
 	public void test_markNameWithMostVotes_checkIfRevotingStartsIfThereIsADraw() {
-		setTestSprintNames();
-		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
-			sprintName.displaySprintName();
-			sprintName.displayVoteButton();
-		}
 		SprintName.setVoteCount(4);
 		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
 		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
@@ -136,11 +138,6 @@ public class RunnerSprintNameGeneratorTest {
 
 	@Test
 	public void test_getNamesWithMostVotes_checkIfListContainsTheRightNameIfThereIsAWinner() {
-		setTestSprintNames();
-		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
-			sprintName.displaySprintName();
-			sprintName.displayVoteButton();
-		}
 		SprintName.setVoteCount(5);
 		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
 		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
@@ -152,11 +149,6 @@ public class RunnerSprintNameGeneratorTest {
 
 	@Test
 	public void test_getNamesWithMostVotes_checkIfListContainsTheRightNamesIfThereIsADraw() {
-		setTestSprintNames();
-		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
-			sprintName.displaySprintName();
-			sprintName.displayVoteButton();
-		}
 		SprintName.setVoteCount(4);
 		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
 		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
@@ -168,11 +160,6 @@ public class RunnerSprintNameGeneratorTest {
 
 	@Test
 	public void test_getHighestVotes_checkIfHighestVotesIsCorrect() {
-		setTestSprintNames();
-		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
-			sprintName.displaySprintName();
-			sprintName.displayVoteButton();
-		}
 		SprintName.setVoteCount(5);
 		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
 		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
@@ -185,11 +172,6 @@ public class RunnerSprintNameGeneratorTest {
 
 	@Test
 	public void test_getHighestVotes_checkIfHighestVotesIsCorrectEvenIfMoreNamesHasTheSameVotes() {
-		setTestSprintNames();
-		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
-			sprintName.displaySprintName();
-			sprintName.displayVoteButton();
-		}
 		SprintName.setVoteCount(6);
 		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
 		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
@@ -202,11 +184,6 @@ public class RunnerSprintNameGeneratorTest {
 
 	@Test
 	public void test_startRevote_checkIfRevoteStartsWithRemainingNames() {
-		setTestSprintNames();
-		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
-			sprintName.displaySprintName();
-			sprintName.displayVoteButton();
-		}
 		SprintName.setVoteCount(6);
 		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
 		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
@@ -221,11 +198,6 @@ public class RunnerSprintNameGeneratorTest {
 	
 	@Test
 	public void test_markNamesDraw_checkIfNamesWereHighlightedYellow() {
-		setTestSprintNames();
-		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
-			sprintName.displaySprintName();
-			sprintName.displayVoteButton();
-		}
 		SprintName.setVoteCount(4);
 		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
 		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
@@ -236,13 +208,9 @@ public class RunnerSprintNameGeneratorTest {
 		assertEquals(Color.YELLOW, RunnerSprintNameGenerator.getNamesWithMostVotes().get(1).getOutputName().getBackground());
 	
 	}
+	
 	@Test
 	public void test_markWinnerName_checkIfCorrectNameIsHighlightedGreen() {
-		setTestSprintNames();
-		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
-			sprintName.displaySprintName();
-			sprintName.displayVoteButton();
-		}
 		SprintName.setVoteCount(5);
 		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
 		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
@@ -255,11 +223,6 @@ public class RunnerSprintNameGeneratorTest {
 	
 	@Test 
 	public void test_getNamesWithMostVotesString_checkIfStringContainsNames() {
-		setTestSprintNames();
-		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
-			sprintName.displaySprintName();
-			sprintName.displayVoteButton();
-		}
 		SprintName.setVoteCount(4);
 		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
 		RunnerSprintNameGenerator.getSprintNames().get(1).voteUp();
@@ -277,10 +240,6 @@ public class RunnerSprintNameGeneratorTest {
 	
 	@Test
 	public void test_startVoting_checkIfVotingStarted() {
-		setTestSprintNames();
-		for (SprintName sprintName : RunnerSprintNameGenerator.getSprintNames()) {
-			sprintName.displaySprintName();
-		}
 		RunnerSprintNameGenerator.startVoting(RunnerSprintNameGenerator.getSprintNames());
 		for(int i = 0; i < RunnerSprintNameGenerator.getSprintNames().size(); i++) {
 			assertNotNull(RunnerSprintNameGenerator.getSprintNames().get(i).getVoteBtn());
